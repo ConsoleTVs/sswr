@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "tsup src/index.ts --watch --format esm,cjs,iife --legacy-output",
     "build": "tsup src/index.ts --dts --format esm,cjs,iife --legacy-output --minify",
-    "prepack": "yarn build"
+    "prepack": "npm run build"
   },
   "devDependencies": {
     "tsup": "^3.7.1",
