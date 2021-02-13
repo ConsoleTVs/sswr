@@ -65,16 +65,17 @@ yarn add sswr
 
 ```svelte
 <script>
-  import { useSWR } from 'sswr'
+  import { useSWR } from "sswr";
   // Call the `useSWR` and pass the key you want to use. It will be pased
   // to the fetcher function. The fetcher function can be configured globally
   // or passed as one of the options to this function.
-  const { data: posts } = useSWR('https://jsonplaceholder.typicode.com/posts')
+  const { data: posts } = useSWR("https://jsonplaceholder.typicode.com/posts");
 </script>
 
-{#if posts}
-  {#each posts as post (post.id)}
-    <div>{post.title}</div>
+{#if $posts}
+  {#each $posts as post (post.id)}
+    <h1>{post.title}</h1>
+    <p>{post.body}</p>
   {/each}
 {/if}
 ```
@@ -167,20 +168,23 @@ export const clear = swr.clear
 
 ```svelte
 <script>
-  import { useSWR } from 'sswr'
+  import { useSWR } from "sswr";
 
-  const { data: post } = useSWR('https://jsonplaceholder.typicode.com/posts/1')
+  const { data: post } = useSWR("https://jsonplaceholder.typicode.com/posts/1");
   // We need to pass a function as the key. Function will throw an error when post is undefined
   // but we catch that and wait till it re-validates into a valid key to populate the user variable.
-  $: ({ data: user } = useSWR(() => `https://jsonplaceholder.typicode.com/users/${post.value.userId}`))
+  $: ({ data: user } = useSWR(
+    () => `https://jsonplaceholder.typicode.com/users/${$post.userId}`
+  ));
 </script>
 
-{#if post}
-  <div>{post.title}</div>
+{#if $post}
+  <div>{$post.title}</div>
 {/if}
-{#if user}
-  <div>{user.name}</div>
+{#if $user}
+  <div>{$user.name}</div>
 {/if}
+
 ```
 
 ## Re-validate on demand
@@ -234,8 +238,8 @@ function revalidate(options): void
   const { data: post, revalidate } = useSWR('https://jsonplaceholder.typicode.com/posts/1')
 </script>
 
-{#if post}
-  <div>{post.title}</div>
+{#if $post}
+  <div>{$post.title}</div>
   <button on:click={() => revalidate()}>Revalidate</button>
 {/if}
 ```
@@ -299,8 +303,8 @@ over-write the static data with the server data again.
   const { data: post, mutate } = useSWR('https://jsonplaceholder.typicode.com/posts/1')
 </script>
 
-{#if post}
-  <div>{post.title}</div>
+{#if $post}
+  <div>{$post.title}</div>
   <button on:click={() => mutate((state) => ({ ...state, title: 'Sample' }), { revalidate: false })}>
     Mutate only title
   </button>
@@ -324,10 +328,10 @@ For example, a failed request.
   const { data: posts, error } = useSWR('https://jsonplaceholder.typicode.com/posts')
 </script>
 
-{#if error}
+{#if $error}
   <div>There was an error</div>
-{:else if posts}
- {#each posts as post (post.id)}
+{:else if $posts}
+ {#each $posts as post (post.id)}
     <h1>{post.title}</h1>
  {/each}
 {/if}
@@ -382,8 +386,8 @@ function clear(options): void
   const { data: post, clear } = useSWR('https://jsonplaceholder.typicode.com/posts/1')
 </script>
 
-{#if post}
-  <div>{post.title}</div>
+{#if $post}
+  <div>{$post.title}</div>
   <button on:click={() => clear()}>
     Clear cacheed data
   </button>
@@ -392,4 +396,4 @@ function clear(options): void
 
 ## Contributors
 
-![No contributors yet](https://i.imgflip.com/2agvl6.jpg)
+- [Sam McCord](https://github.com/sammccord)
