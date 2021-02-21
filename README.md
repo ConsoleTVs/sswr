@@ -126,7 +126,7 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
 ## Global configuration options
 
 You can configure the options globally by creating a SWR instance and using it in your Svelte
-application as a plugin. This step is not mandatory but it's recommened for most apps.
+application as a plugin. This step is not mandatory but it's recommended for most apps.
 
 ### Signature
 
