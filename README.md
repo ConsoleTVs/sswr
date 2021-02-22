@@ -31,7 +31,7 @@ Quote from [vercel's SWR](https://swr.vercel.app/) for react:
 ## Features
 
 - :tada: &nbsp; Built for **Svelte**
-- :fire: &nbsp; **Extremly small and well packed** at 2KB.
+- :fire: &nbsp; **Extremely small and well packed** at 2KB.
 - :fire: &nbsp; **No dependencies (one polyfill for EventTarget)**.
 - :+1: &nbsp; Built-in **cache** and request deduplication.
 - :eyes: &nbsp; **Dependent fetching** of data that depends on other.
@@ -125,8 +125,8 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
 
 ## Global configuration options
 
-You can configure the options globally by creating a SWR instance and using it in your vue
-application as a plugin. This step is not mandatory but it's recommened for most apps.
+You can configure the options globally by creating a SWR instance and using it in your Svelte
+application as a plugin. This step is not mandatory but it's recommended for most apps.
 
 ### Signature
 
