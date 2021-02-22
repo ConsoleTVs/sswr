@@ -397,3 +397,4 @@ function clear(options): void
 ## Contributors
 
 - [Sam McCord](https://github.com/sammccord)
+- [Len Boyette](https://github.com/kevlened)
