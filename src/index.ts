@@ -58,12 +58,13 @@ export class SSWR extends SWR {
  * Creates a mew SWR instance and exports basic methods to
  * work with without the need for method calling.
  */
-export const createSWR = <D>(options?: Partial<SWROptions<D>>) => {
+export const createSWR = <G = unknown>(options?: Partial<SWROptions<G>>) => {
   const swr = new SSWR(options)
   return {
-    useSWR: (key: SWRKey, options?: Partial<SWROptions<D>>) => swr.useSvelte(key, options),
-    mutate: (key: SWRKey, value: D, options?: Partial<SWRMutateOptions<D>>) => swr.mutate(key, value, options),
-    revalidate: (key: SWRKey, options?: Partial<SWRRevalidateOptions<D>>) => swr.revalidate(key, options),
+    useSWR: <D = G, E = Error>(key: SWRKey, options?: Partial<SWROptions<D>>) => swr.useSvelte<D, E>(key, options),
+    mutate: <D = G>(key: SWRKey, value: D, options?: Partial<SWRMutateOptions<D>>) =>
+      swr.mutate<D>(key, value, options),
+    revalidate: <D = G>(key: SWRKey, options?: Partial<SWRRevalidateOptions<D>>) => swr.revalidate<D>(key, options),
     clear: (keys?: string | string[], options?: Partial<CacheClearOptions>) => swr.clear(keys, options),
   }
 }
