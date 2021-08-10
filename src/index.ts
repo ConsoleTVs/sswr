@@ -60,7 +60,7 @@ export class SSWR extends SWR {
 }
 
 /**
- * Creates a mew SWR instance and exports basic methods to
+ * Creates a new SWR instance and exports basic methods to
  * work with without the need for method calling.
  */
 export const createSWR = <G = unknown>(options?: Partial<SWROptions<G>>) => {
