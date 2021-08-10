@@ -68,7 +68,7 @@ Temporarily you need to add sswr to the Vite optimization exclusions in the `sve
 ```js
 vite: {
   optimizeDeps: {
-	  exclude: ['sswr']
+    exclude: ['sswr']
   }
 }
 ```
