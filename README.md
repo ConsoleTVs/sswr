@@ -75,7 +75,7 @@ kit:
 }
 ```
 
-This step will no longer be necessary soon: it's not sswr fault: they are solving a problem in Vite for SvelteKit (as explained here: https://github.com/sveltejs/kit/issues/2147#issuecomment-895909001).
+_This step will no longer be necessary soon: it's not sswr fault: they are solving a problem in Vite for SvelteKit (as explained here: https://github.com/sveltejs/kit/issues/2147#issuecomment-895909001)._
 
 ## Getting Started
 
