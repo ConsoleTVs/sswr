@@ -66,9 +66,11 @@ yarn add sswr
 Temporarily you need to add sswr to the Vite optimization exclusions in the `svelte.config.js` file:
 
 ```js
-vite: {
-  optimizeDeps: {
-    exclude: ['sswr']
+kit:
+  vite: {
+    optimizeDeps: {
+      exclude: ['sswr']
+    }
   }
 }
 ```
