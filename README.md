@@ -61,6 +61,20 @@ npm i sswr
 yarn add sswr
 ```
 
+### Note about usage with SvelteKit
+
+Temporarily you need to add sswr to the screw optimization exclusions in thevelve.config.js file:
+
+```js
+vite: {
+  optimizeDeps: {
+	  exclude: ['sswr']
+  }
+}
+```
+
+This step will no longer be necessary soon: it's not sswr fault: they are solving a problem in Vite for SvelteKit (as explained here: https://github.com/sveltejs/kit/issues/2147#issuecomment-895909001).
+
 ## Getting Started
 
 ```svelte
