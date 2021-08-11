@@ -9,6 +9,7 @@
   "module": "dist/esm/index.js",
   "unpkg": "dist/iife/index.js",
   "typings": "dist/index.d.ts",
+  "svelte": "src/index.ts",
   "files": [
     "dist"
   ],
