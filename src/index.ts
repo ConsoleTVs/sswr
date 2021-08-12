@@ -1,6 +1,6 @@
 import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
 import { onDestroy, onMount } from 'svelte'
-import { writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 
 /**
  * Exports the extended SWR class with an extra method
@@ -19,6 +19,8 @@ export class SSWR extends SWR {
     // Contains the data and errors stores.
     const data = writable<D | undefined>(undefined, () => () => unsubscribe?.())
     const error = writable<E | undefined>(undefined, () => () => unsubscribe?.())
+    const isLoading = derived([data, error], ([$data, $error]) => $data === undefined && $error === undefined)
+    const isValid = derived([data, error], ([$data, $error]) => $data !== undefined && $error === undefined)
 
     // Stores the unsubscription handler
     onMount(() => {
@@ -54,8 +56,10 @@ export class SSWR extends SWR {
       return this.clear(this.resolveKey(key), options)
     }
 
+    const stop = () => unsubscribe?.()
+
     // Return the needed items.
-    return { data, error, mutate, revalidate, clear }
+    return { data, error, mutate, revalidate, clear, stop, isLoading, isValid }
   }
 }
 
