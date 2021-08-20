@@ -130,7 +130,7 @@ export const use = <D = any, E = Error>(
 }
 
 /**
- * Use the SWR with a vue application.
+ * Use the SWR with a Svelte application.
  */
 export const useSWR = <D = any, E = Error>(
   key: SWRKey | undefined | (() => SWRKey | undefined),
