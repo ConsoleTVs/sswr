@@ -61,20 +61,6 @@ npm i sswr
 yarn add sswr
 ```
 
-### Note about usage with SvelteKit
-
-Temporarily you need to add sswr to the Vite optimization exclusions in the `svelte.config.js` file:
-
-```js
-kit:
-  vite: {
-    optimizeDeps: {
-      exclude: ['sswr']
-    }
-  }
-}
-```
-
 ## Getting Started
 
 ```svelte
@@ -139,44 +125,27 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
 
 ## Global configuration options
 
-You can configure the options globally by creating a SWR instance and using it in your Svelte
-application as a plugin. This step is not mandatory but it's recommended for most apps.
+You can configure the options globally by creating a SWR instance and using it in your vue
+application. This step is not mandatory but it's recommened for most apps.
+
+You can either choose to manually create a SWR instance and import it when needed or replace
+the default SWR instance used by all exported APIs. The second is recommended if only one instance
+will be needed for your application.
 
 ### Signature
 
 ```ts
-function createSWR(options): { useSWR(); mutate(); revalidate(); clear() }
+function createSWR(options): VSWR
+function createDefaultSWR(options): VSWR
 ```
 
 #### Parameters
 
-- `options: SWROptions`: Parameters of the options that will be passed to all components. They are the same as the ones on each instance.
+- `options: SWROptions`: Parameters of the options that will be passed to all components. They are the same as the ones on each `useSWR` function call.
 
 #### Return value
 
-A set of functions to be used at any component.
-
-### Example
-
-In any file place the following code and you can import the SWR
-functions directly in any component with the given configuration.
-
-```js
-import { createSWR } from 'sswr'
-
-const swr = createSWR({
-  // Configure a global fetcher for all SWR hooks. This
-  // can be replaced with anything that returns a promise
-  // with the data inside, for example: axios.
-  fetcher: (key) => fetch(key).then((res) => res.json()),
-})
-
-// Default instance exports.
-export const useSWR = swr.useSWR
-export const mutate = swr.mutate
-export const revalidate = swr.revalidate
-export const clear = swr.clear
-```
+A SWR instance that can be used to access all the API.
 
 ## Dependent fetching
 
