@@ -9,9 +9,12 @@ export default defineConfig({
       fileName: 'sswr',
     },
     rollupOptions: {
-      external: ['swrev'],
+      external: ['swrev', 'svelte'],
       output: {
-        globals: { swrev: 'swrev' },
+        globals: {
+          swrev: 'swrev',
+          svelte: 'svelte',
+        },
       },
     },
   },
