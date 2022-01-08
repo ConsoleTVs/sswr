@@ -1,6 +1,6 @@
 import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
 import { onDestroy, onMount } from 'svelte'
-import { writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 
 /**
  * Exports the extended SWR class with an extra method
@@ -23,7 +23,10 @@ export class SSWR extends SWR {
       data.set(this.get<D>(this.resolveKey(key)))
 
       // Handlers that will be executed when data changes.
-      const onData = (d: D) => data.set(d)
+      const onData = (d: D) => {
+        error.set(undefined)
+        data.set(d)
+      }
       const onError = (e: E) => error.set(e)
 
       // Subscribe and use the SWR fetch using the given key.
@@ -54,8 +57,18 @@ export class SSWR extends SWR {
       return this.clear(this.resolveKey(key), ops)
     }
 
+    // Determines if the request is still on its way
+    // and therefore, it's still loading.
+    const isLoading = derived([data, error], ([data, error]) => data === undefined && error === undefined)
+
+    // Determines if the data is valid. This means that
+    // there is no error associated with the data.
+    // This exists because errors do not wipe the data value
+    // and can still be used.
+    const isValid = derived([data, error], ([data, error]) => data !== undefined && error === undefined)
+
     // Return the needed items.
-    return { data, error, mutate, revalidate, clear }
+    return { data, error, mutate, revalidate, clear, isLoading, isValid }
   }
 }
 
