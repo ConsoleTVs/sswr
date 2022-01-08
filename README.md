@@ -122,8 +122,8 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
 - `mutate: (value, options) => void`: Mutate alias for the global mutate function without the need to append the key to it.
 - `revalidate: (options) => void`: Revalidation alias for the global revalidate function without the need to append the key to it.
 - `clear: (options) => void`: Clears the current key data from the cache.
-- `isLoading: Derived<boolean>`: Determines if the request is still on its way and therefore, it's still loading.
-- `isValid: Derived<boolean>`: Determines if the data is valid. This means that there is no error associated with the data. This exists because errors do not wipe the data value and can still be used.
+- `isLoading: Readable<boolean>`: Determines if the request is still on its way and therefore, it's still loading.
+- `isValid: Readable<boolean>`: Determines if the data is valid. This means that there is no error associated with the data. This exists because errors do not wipe the data value and can still be used.
 
 ## Global configuration options
 
