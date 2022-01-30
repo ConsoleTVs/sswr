@@ -15,6 +15,7 @@
 - [Mutate on demand](#mutate-on-demand)
 - [Error handling](#error-handling)
 - [Clear Cache](#clear-cache)
+- [Using with SvelteKit SSR](#using-with-sveltekit-ssr)
 - [Contributors](#contributors)
 
 ## Introduction
@@ -106,7 +107,7 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
   - `fetcher: (key) => Promise<any> = (url) => fetch(url).then((res) => res.json())`: Determines the fetcher function to use.
     This will be called to get the data.
   - `initialData: any = undefined`: Represents the initial data to use instead of undefined. Keep in mind the component will still attempt to re-validate
-    unless `revalidateOnStart` is set false.
+    unless `revalidateOnMount` is set false.
   - `revalidateOnStart: boolean = true`: Determines if the hook should revalidate the key when it is called.
   - `dedupingInterval: number = 2000`: Determines the deduping interval. This interval represents the time SWR will avoid to perform a request if
     the last one was made before `dedupingInterval` ago.
@@ -378,6 +379,58 @@ function clear(options): void
   </button>
 {/if}
 ```
+
+## Using with SvelteKit SSR
+
+SvelteKit allows you to fetch data on the backend. This allows you to combine SSR (where your data is present in the HTML) with the live updating that this package provides.
+
+Here is an example of how to implement the [Getting Started](#getting-started) example with support for SSR.
+
+```svelte
+<script context="module">
+  const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+  export async function load({ fetch }) {
+    const ssrPosts = await (await fetch(apiUrl))?.json();
+
+    return {
+      props: {
+        ssrPosts
+      }
+    };
+  }
+</script>
+
+<script>
+  import { useSWR } from 'sswr';
+
+  export let ssrPosts;
+
+  // Start with initial data from SSR
+  let posts = ssrPosts;
+
+  // Pass initial SSR data to sswr and disable revalidation on start
+  const { data: sswrPosts } = useSWR(apiUrl, { initialData: ssrPosts, revalidateOnStart: false });
+
+  // Once we refresh the data via sswr, stop using the SSR data
+  sswrPosts.subscribe((newPosts) => {
+    if (newPosts) {
+      posts = newPosts;
+    }
+  });
+</script>
+
+{#if posts}
+  {#each posts as post (post.id)}
+    <h1>{post.title}</h1>
+    <p>{post.body}</p>
+  {/each}
+{/if}
+```
+
+This is a simple example that will use SWR as the strategy to fetch the data. In this particular case,
+all the default options are used (or the ones specified in the global config) and it will fetch the data
+using the default or global fetcher and update the DOM when the request is done.
 
 ## Contributors
 
