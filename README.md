@@ -428,10 +428,6 @@ Here is an example of how to implement the [Getting Started](#getting-started) e
 {/if}
 ```
 
-This is a simple example that will use SWR as the strategy to fetch the data. In this particular case,
-all the default options are used (or the ones specified in the global config) and it will fetch the data
-using the default or global fetcher and update the DOM when the request is done.
-
 ## Contributors
 
 - [Sam McCord](https://github.com/sammccord)
