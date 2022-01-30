@@ -106,7 +106,7 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
   - `fetcher: (key) => Promise<any> = (url) => fetch(url).then((res) => res.json())`: Determines the fetcher function to use.
     This will be called to get the data.
   - `initialData: any = undefined`: Represents the initial data to use instead of undefined. Keep in mind the component will still attempt to re-validate
-    unless `revalidateOnMount` is set false.
+    unless `revalidateOnStart` is set false.
   - `revalidateOnStart: boolean = true`: Determines if the hook should revalidate the key when it is called.
   - `dedupingInterval: number = 2000`: Determines the deduping interval. This interval represents the time SWR will avoid to perform a request if
     the last one was made before `dedupingInterval` ago.
