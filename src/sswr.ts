@@ -19,19 +19,19 @@ export class SSWR extends SWR {
 
     // Stores the unsubscription handler
     onMount(() => {
-      // Set the data of the writable.
-      data.set(this.get<D>(this.resolveKey(key)))
-
       // Handlers that will be executed when data changes.
       const onData = (d: D) => {
+        // Set the last error to undefined
+        // since we just got a correct data.
         error.set(undefined)
+        // Set the data's value to the new value.
         data.set(d)
       }
       const onError = (e: E) => error.set(e)
 
       // Subscribe and use the SWR fetch using the given key.
       unsubscribe = this.use<D, E>(key, onData, onError, {
-        loadInitialCache: false,
+        loadInitialCache: true,
         ...options,
       }).unsubscribe
     })
