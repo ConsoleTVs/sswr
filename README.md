@@ -384,47 +384,49 @@ function clear(options): void
 
 SvelteKit allows you to fetch data on the backend. This allows you to combine SSR (where your data is present in the HTML) with the live updating that this package provides.
 
-Here is an example of how to implement the [Getting Started](#getting-started) example with support for SSR.
+Here is an example of how to implement the [Getting Started](#getting-started) example with support for SSR. In this example, we have disabled the
+revalidation on the client, althought it is also possible to re-hydrate the
+information on it if needed.
 
 ```svelte
-<script context="module">
-  const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+<script lang="ts" context="module">
+	import type { Load } from '@sveltejs/kit';
 
-  export async function load({ fetch }) {
-    const ssrPosts = await (await fetch(apiUrl))?.json();
+	const url = 'https://jsonplaceholder.typicode.com/posts';
 
-    return {
-      props: {
-        ssrPosts
-      }
-    };
-  }
+	export const load: Load = async ({ fetch }) => {
+		const response = await fetch(url);
+
+		return {
+			props: {
+				initialData: await response.json()
+			}
+		};
+	};
 </script>
 
-<script>
-  import { useSWR } from 'sswr';
+<script lang="ts">
+	import { useSWR } from 'sswr';
 
-  export let ssrPosts;
+	interface Post {
+		id: number;
+		title: string;
+		body: string;
+	}
 
-  // Start with initial data from SSR
-  let posts = ssrPosts;
+	export let initialData: Post[];
 
-  // Pass initial SSR data to sswr and disable revalidation on start
-  const { data: sswrPosts } = useSWR(apiUrl, { initialData: ssrPosts, revalidateOnStart: false });
-
-  // Once we refresh the data via sswr, stop using the SSR data
-  sswrPosts.subscribe((newPosts) => {
-    if (newPosts) {
-      posts = newPosts;
-    }
-  });
+	const { data: posts } = useSWR<Post[]>(url, {
+		initialData,
+		revalidateOnStart: false
+	});
 </script>
 
-{#if posts}
-  {#each posts as post (post.id)}
-    <h1>{post.title}</h1>
-    <p>{post.body}</p>
-  {/each}
+{#if $posts}
+	{#each $posts as post (post.id)}
+		<h1>{post.title}</h1>
+		<p>{post.body}</p>
+	{/each}
 {/if}
 ```
 
@@ -432,3 +434,4 @@ Here is an example of how to implement the [Getting Started](#getting-started) e
 
 - [Sam McCord](https://github.com/sammccord)
 - [Len Boyette](https://github.com/kevlened)
+- [Stanislav Khromov](https://github.com/khromov)
