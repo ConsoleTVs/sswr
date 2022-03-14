@@ -1,5 +1,5 @@
 import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
-import { onDestroy, onMount } from 'svelte'
+import { onDestroy, beforeUpdate } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
 /**
@@ -18,7 +18,7 @@ export class SSWR extends SWR {
     const error = writable<E | undefined>(undefined, () => () => unsubscribe?.())
 
     // Stores the unsubscription handler
-    onMount(() => {
+    beforeUpdate(() => {
       // Handlers that will be executed when data changes.
       const onData = (d: D) => {
         // Set the last error to undefined
@@ -30,10 +30,12 @@ export class SSWR extends SWR {
       const onError = (e: E) => error.set(e)
 
       // Subscribe and use the SWR fetch using the given key.
-      unsubscribe = this.use<D, E>(key, onData, onError, {
-        loadInitialCache: true,
-        ...options,
-      }).unsubscribe
+      if (!unsubscribe) {
+        unsubscribe = this.use<D, E>(key, onData, onError, {
+          loadInitialCache: true,
+          ...options,
+        }).unsubscribe
+      }
     })
 
     // Cleanup code to unsubscribe.
