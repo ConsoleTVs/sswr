@@ -1,5 +1,5 @@
 import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
-import { onDestroy, onMount } from 'svelte'
+import { onMount } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
 /**
@@ -18,8 +18,7 @@ export class SSWR extends SWR {
     const error = writable<E | undefined>(undefined, () => () => unsubscribe?.())
 
     // Stores the unsubscription handler
-    onMount(() => {
-      // Handlers that will be executed when data changes.
+    // Handlers that will be executed when data changes.
       const onData = (d: D) => {
         // Set the last error to undefined
         // since we just got a correct data.
@@ -29,15 +28,17 @@ export class SSWR extends SWR {
       }
       const onError = (e: E) => error.set(e)
 
-      // Subscribe and use the SWR fetch using the given key.
-      unsubscribe = this.use<D, E>(key, onData, onError, {
-        loadInitialCache: true,
-        ...options,
-      }).unsubscribe
-    })
+    // Subscribe and use the SWR fetch using the given key.
+    unsubscribe = this.subscribe<D, E>(key, onData, onError, {
+      loadInitialCache: true,
+      ...options,
+    }).unsubscribe
+
 
     // Cleanup code to unsubscribe.
-    onDestroy(() => unsubscribe?.())
+    onMount(() => {
+      return () =>  unsubscribe?.()
+    })
 
     // Mutates the current key.
     const mutate = (value: D, ops?: Partial<SWRMutateOptions<D>>) => {
@@ -98,8 +99,8 @@ export const createDefaultSWR = <D = any>(options?: Partial<SWROptions<D>>) => {
  * this data will be stale and revalidate in the background
  * unless specified otherwise.
  */
-export const subscribe = <D>(key: SWRKey | undefined, onData: (value: D) => any) => {
-  return swr.subscribe<D>(key, onData)
+export const subscribe = <D, E>(key: SWRKey | undefined, onData: (value: D) => any, onError: (error: E) => void, options?: Partial<SWROptions<D>>) => {
+  return swr.subscribe<D, E>(key, onData, onError, options)
 }
 
 /**
@@ -129,7 +130,7 @@ export const get = <D = any>(key?: SWRKey): D | undefined => {
  * in the cache, it will wait for it before resolving.
  */
 export const getOrWait = <D = any>(key: SWRKey): Promise<D> => {
-  return swr.getOrWait<D>(key)
+  return swr.getWait<D>(key)
 }
 
 /**
@@ -142,7 +143,7 @@ export const use = <D = any, E = Error>(
   onError: (error: E) => void,
   options?: Partial<SWROptions<D>>
 ) => {
-  return swr.use<D, E>(key, onData, onError, options)
+  return swr.subscribe<D, E>(key, onData, onError, options)
 }
 
 /**

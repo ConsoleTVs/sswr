@@ -22,16 +22,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && tsc",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "test": "vitest"
   },
   "devDependencies": {
     "typescript": "^4.5.4",
-    "vite": "^2.7.10"
+    "vite": "^2.7.10",
+    "vitest": "^0.19.1"
   },
   "peerDependencies": {
     "svelte": "^3.29.0"
   },
   "dependencies": {
-    "swrev": "^1.10.5"
+    "swrev": "^3.0.0"
   }
 }
