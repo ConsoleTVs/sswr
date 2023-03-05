@@ -1,4 +1,4 @@
-import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
+import { SWR, SWRKey, SWROptions, SWRMutateOptions, SWRMutateValue, SWRRevalidateOptions, CacheClearOptions } from 'swrev'
 import { onDestroy, beforeUpdate } from 'svelte'
 import { writable, derived } from 'svelte/store'
 
@@ -42,7 +42,7 @@ export class SSWR extends SWR {
     onDestroy(() => unsubscribe?.())
 
     // Mutates the current key.
-    const mutate = (value: D, ops?: Partial<SWRMutateOptions<D>>) => {
+    const mutate = (value: SWRMutateValue<D>, ops?: Partial<SWRMutateOptions<D>>) => {
       return this.mutate(this.resolveKey(key), value, {
         revalidateOptions: options,
         ...ops,
@@ -162,7 +162,7 @@ export const useSWR = <D = any, E = Error>(
  * This is used to replace the cache contents of the
  * given key manually.
  */
-export const mutate = <D = any>(key: SWRKey, value: D, options?: Partial<SWRMutateOptions<D>>) => {
+export const mutate = <D = any>(key: SWRKey, value: SWRMutateValue<D>, options?: Partial<SWRMutateOptions<D>>) => {
   return swr.mutate<D>(key, value, options)
 }
 
