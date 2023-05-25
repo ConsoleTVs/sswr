@@ -31,10 +31,8 @@ export class SSWR extends SWR {
 
       // Subscribe and use the SWR fetch using the given key.
       if (!unsubscribe) {
-        unsubscribe = this.use<D, E>(key, onData, onError, {
-          loadInitialCache: true,
-          ...options,
-        }).unsubscribe
+        const useRes = use(key, onData, onError, options);
+        unsubscribe = useRes.unsubscribe;
       }
     })
 
@@ -131,7 +129,7 @@ export const get = <D = any>(key?: SWRKey): D | undefined => {
  * in the cache, it will wait for it before resolving.
  */
 export const getOrWait = <D = any>(key: SWRKey): Promise<D> => {
-  return swr.getOrWait<D>(key)
+  return swr.getWait<D>(key)
 }
 
 /**
@@ -144,7 +142,7 @@ export const use = <D = any, E = Error>(
   onError: (error: E) => void,
   options?: Partial<SWROptions<D>>
 ) => {
-  return swr.use<D, E>(key, onData, onError, options)
+  return swr.subscribe<D, E>(key, onData, onError, options)
 }
 
 /**
