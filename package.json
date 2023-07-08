@@ -1,17 +1,17 @@
 {
   "name": "sswr",
-  "version": "1.7.0",
+  "version": "1.10.0",
   "description": "Svelte stale while revalidate (SWR) data fetching strategy",
   "repository": "github.com/ConsoleTVs/sswr",
   "author": "Èrik C. Forés",
   "license": "MIT",
   "types": "./dist/sswr.d.ts",
   "main": "./dist/sswr.umd.js",
-  "module": "./dist/sswr.es.js",
+  "module": "./dist/sswr.mjs",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/sswr.es.js",
+      "import": "./dist/sswr.mjs",
       "require": "./dist/sswr.umd.js"
     }
   },
@@ -25,13 +25,13 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "typescript": "^4.5.4",
-    "vite": "^2.7.10"
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "peerDependencies": {
     "svelte": "^3.29.0"
   },
   "dependencies": {
-    "swrev": "^1.10.5"
+    "swrev": "^3.0.0"
   }
 }
