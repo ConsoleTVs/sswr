@@ -1,6 +1,6 @@
 {
   "name": "sswr",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Svelte stale while revalidate (SWR) data fetching strategy",
   "repository": "github.com/ConsoleTVs/sswr",
   "author": "Èrik C. Forés",
