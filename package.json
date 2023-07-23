@@ -5,18 +5,21 @@
   "repository": "github.com/ConsoleTVs/sswr",
   "author": "Èrik C. Forés",
   "license": "MIT",
+  "type": "module",
   "types": "./dist/sswr.d.ts",
-  "main": "./dist/sswr.umd.js",
-  "module": "./dist/sswr.mjs",
+  "main": "./dist/sswr.umd.cjs",
+  "module": "./dist/sswr.js",
   "exports": {
-    "./package.json": "./package.json",
     ".": {
-      "import": "./dist/sswr.mjs",
-      "require": "./dist/sswr.umd.js"
-    }
+      "types": "./dist/sswr.d.ts",
+      "import": "./dist/sswr.js",
+      "require": "./dist/sswr.umd.cjs"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
+    "src",
     "package.json"
   ],
   "scripts": {
