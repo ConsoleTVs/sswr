@@ -128,8 +128,8 @@ const { data, error, mutate, revalidate } = useSWR(key, options)
 
 ## Global configuration options
 
-You can configure the options globally by creating a SWR instance and using it in your vue
-application. This step is not mandatory but it's recommened for most apps.
+You can configure the options globally by creating a SWR instance and using it in your svelte
+application. This step is not mandatory but it's recommended for most apps.
 
 You can either choose to manually create a SWR instance and import it when needed or replace
 the default SWR instance used by all exported APIs. The second is recommended if only one instance
