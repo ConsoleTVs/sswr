@@ -3,6 +3,9 @@
   "version": "2.1.0",
   "description": "Svelte stale while revalidate (SWR) data fetching strategy",
   "repository": "https://github.com/ConsoleTVs/sswr",
+  "bugs": {
+    "url": "https://github.com/ConsoleTVs/sswr/issues"
+  },
   "author": "Èrik C. Forés",
   "license": "MIT",
   "type": "module",
